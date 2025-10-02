@@ -16,9 +16,8 @@ public:
         double kd = this->get_parameter("kd").as_double();
         pid_ = PID(kp, ki, kd);
 
-        // declare and get parameter for setpoint
-        this->declare_parameter("setpoint", 0.0);
-        setpoint_ = this->get_parameter("setpoint").as_double();
+        // declare and get parameter for setpoint making setpoint a topic so that it can be changed dynamically
+        setpoint_sub_ = this->create_subscription<std_msgs::msg::Float64>("setpoint", 10, std::bind(&PIDNode::setpoint_callback, this, std::placeholders::_1));
 
         // create publisher for control output
         publisher_ = this->create_publisher<std_msgs::msg::Float64>("control_output", 10);
@@ -47,6 +46,12 @@ private:
         publisher_->publish(message); // publish the control output
         RCLCPP_INFO(this->get_logger(), "Published control output: '%f'", control_output); // log the control output
     }
+
+    
+    void setpoint_callback(const std_msgs::msg::Float64::SharedPtr msg) {
+    setpoint_ = msg->data;
+    RCLCPP_INFO(this->get_logger(), "Updated setpoint: '%f'", setpoint_);
+}
 
     PID pid_; // instance of the PID controller
     double setpoint_; // desired target value

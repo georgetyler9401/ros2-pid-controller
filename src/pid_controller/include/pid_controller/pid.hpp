@@ -14,6 +14,6 @@ class PID {
         double kp_, ki_, kd_; // gains
         double integral_; // integral term
         double prev_error_; // previous error for derivative term
-    }
+    };
 
 #endif // PID_HPP_
