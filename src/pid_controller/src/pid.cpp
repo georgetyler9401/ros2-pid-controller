@@ -25,4 +25,5 @@ double PID::compute(double target, double current, double dt) {
 
     // output is the sum of terms
     double output = P + I + D;
+    return output;
 }

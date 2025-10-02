@@ -47,7 +47,7 @@ private:
         RCLCPP_INFO(this->get_logger(), "Published control output: '%f'", control_output); // log the control output
     }
 
-    
+
     void setpoint_callback(const std_msgs::msg::Float64::SharedPtr msg) {
     setpoint_ = msg->data;
     RCLCPP_INFO(this->get_logger(), "Updated setpoint: '%f'", setpoint_);
@@ -58,6 +58,7 @@ private:
     double measurement_; // current measured value
     rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr publisher_; // publisher for control output
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr subscription_; // subscription for measurement input
+    rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr setpoint_sub_; // subscription for setpoint input
     rclcpp::TimerBase::SharedPtr timer_; // timer to trigger periodic control computation
 };
 
